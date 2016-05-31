@@ -1,0 +1,18 @@
+﻿@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<GreenSpoon.Domain.Items.GreenSpoon.Recipes.IRecipePage>
+
+<h1>Recipe</h1>
+<h2>@Editable(x => x.Title)</h2>
+
+<p>@Editable(x => x.Description)</p>
+
+<p>@RenderImage(x => x.MainImage)</p>
+
+<p>@Editable(x => x.PrepTime)</p>
+
+@foreach (var step in Model.Steps)
+{
+    <p>@step.Description</p>
+
+    <p>@step.Image</p>
+
+}

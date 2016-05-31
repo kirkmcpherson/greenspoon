@@ -1,0 +1,26 @@
+﻿@using GreenSpoon.Domain.Items.GreenSpoon.Recipes
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Greenspoon.Models.Search.SearchViewModel<GreenSpoon.Domain.Items.GreenSpoon.Search.ISearchPage, GreenSpoon.Models.Search.SearchFilterModel>>
+
+<h2>@Editable(x => x.PageModel.Title)</h2>
+
+@Editable(x => x.PageModel.Description)
+
+@using (Html.BeginRouteForm(Sitecore.Mvc.Configuration.MvcSettings.SitecoreRouteName, FormMethod.Post))
+{
+    @Html.LabelFor(x => x.FilterModel.Q)
+    @Html.EditorFor(x => x.FilterModel.Q)
+
+    <input type="submit" />
+}
+
+@Editable(x => x.PageModel.Results)
+
+@foreach(var recipe in Model.GlassSearchResults)
+{
+    <h4><a href="@recipe.Url">@recipe.Name</a></h4>
+    if(recipe is IRecipePage) {
+        @RenderImage((IRecipePage)recipe, x => x.MainImage)
+    }
+
+}
+
