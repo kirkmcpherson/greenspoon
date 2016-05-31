@@ -70,6 +70,9 @@
     <Compile Include="App_Start\GlassMapperScCustom.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="ComputedFields\RecipeSteps.cs" />
+    <Compile Include="Extensions\GlassExtensions.cs" />
+    <Compile Include="Extensions\GuidExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Items\BaseItem.cs" />
     <Compile Include="Items\GreenSpoon\Recipes\IRecipePage.cs" />
     <Compile Include="Items\GreenSpoon\Recipes\IRecipesLandingPage.cs" />

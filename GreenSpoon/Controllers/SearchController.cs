@@ -20,6 +20,7 @@ using GreenSpoon.Domain.Items.GreenSpoon.Search;
 using Greenspoon.Models.Search;
 using Glass.Mapper.Sc.Web.Mvc;
 using GreenSpoon.Models.Search;
+using GreenSpoon.Domain.Extensions;
 
 namespace GreenSpoon.Controllers
 {
@@ -28,19 +29,23 @@ namespace GreenSpoon.Controllers
         // GET: Search
         public ActionResult Search(SearchFilterModel filterModel)
         {
-            //string find_value = "butter";
+            string findValue = filterModel.Q;
 
             if (filterModel.Q == null)
             {
                 filterModel.Q = String.Empty;
             }
 
-           var context = ContentSearchManager.GetIndex("sitecore_master_index").CreateSearchContext();
+            var context = ContentSearchManager.GetIndex("sitecore_master_index").CreateSearchContext();
 
-           //var predicate = PredicateBuilder.True<GreenSpoonSearchResultItem>();
-            //predicate = predicate.Or(x => x.Content.Contains(query));
+            var predicate = PredicateBuilder.False<GreenSpoonSearchResultItem>();
+            predicate = predicate.Or(x => x.Content.Contains(findValue));
+            predicate = predicate.Or(x => x.RecipeSteps.Contains(findValue));
+            predicate = predicate.And(i => i["_templates"].Contains(typeof(IRecipePage).GetTemplateId().Normalize()));
 
-            IQueryable<GreenSpoonSearchResultItem> query_with_facet = context.GetQueryable<GreenSpoonSearchResultItem>().Where(x => x.RecipeSteps.Contains(filterModel.Q));
+            IQueryable<GreenSpoonSearchResultItem> query_with_facet = context.GetQueryable<GreenSpoonSearchResultItem>().Where(predicate);
+
+            //IQueryable<GreenSpoonSearchResultItem> query_with_facet = context.GetQueryable<GreenSpoonSearchResultItem>().Where(x => x.RecipeSteps.Contains(findValue));
 
             //var searchResults = context.GetQueryable<GreenSpoonSearchResultItem>().Where(x => x.RecipeSteps.Contains(find_value)).Take(10).GetResults();
 
